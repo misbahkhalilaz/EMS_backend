@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const getUser = require("../DB/queries").queryUser;
 const JWT_KEY = "secretkey";
 
 const auth = (req, res, next) => {
@@ -8,15 +9,28 @@ const auth = (req, res, next) => {
 			let credentials = Buffer.from(auth_header[1], "base64")
 				.toString("ascii")
 				.split(":");
-			if (credentials[0] === "mkaz" && credentials[1] === "0438839") {
-				let token = jwt.sign(
-					{ role: req.headers.role, user: credentials[0] },
-					JWT_KEY,
-					{ expiresIn: "24s" }
-				);
-				res.json(token);
-			} else {
-				res.json("bad credentials");
+			if (req.headers.role === "owner") {
+				getUser("owner", { userid: credentials[0] }, { _id: 0 })
+					.then((resolve) => {
+						console.log(resolve[0]);
+						if (
+							resolve &&
+							credentials[0] === resolve[0].userid &&
+							credentials[1] === resolve[0].password
+						) {
+							let token = jwt.sign(
+								{ name: resolve[0].name, role: "owner" },
+								JWT_KEY,
+								{
+									expiresIn: "24h",
+								}
+							);
+							res.json(token);
+						} else res.json("bad credentials");
+					})
+					.catch((reject) => {
+						console.log(reject);
+					});
 			}
 		}
 		if (auth_header[0] === "Bearer") {
@@ -34,5 +48,7 @@ const auth = (req, res, next) => {
 		);
 	}
 };
+
+const authenticator = () => {};
 
 module.exports = { auth };
