@@ -16,10 +16,21 @@ let queryUser = (collection_name, query, filter, mapcallback) => {
 	});
 };
 
-// queryUser("owner", { name: "Misbah" }, { _id: 0 }, (user) => user).then(
-// 	(res, rej) => {
-// 		console.log(res);
+// queryUser(
+// 	"department",
+// 	{ "admins.userid": "dpadmin" },
+// 	{ _id: 0, admins: 1 },
+// 	(user) => {
+// 		return {
+// 			name: user.admins[0].name,
+// 			userid: user.admins[0].userid,
+// 			password: user.admins[0].password,
+// 		};
 // 	}
-// );
+// )
+// 	.then((res, rej) => {
+// 		console.log(res);
+// 	})
+// 	.catch((err) => console.log(err));
 
 module.exports = { queryUser };

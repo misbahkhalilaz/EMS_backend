@@ -10,7 +10,7 @@ app.use(express.json(), auth, (req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-	res.json("hi");
+	res.json(req.token_data);
 });
 
 app.listen(4000, () => {

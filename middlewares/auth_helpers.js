@@ -26,7 +26,7 @@ const genToken = (res, collection, credentials, query, filter, map) => {
 					{
 						userid: user.userid,
 						name: user.name,
-						role: "owner",
+						role: collection,
 					},
 					JWT_KEY,
 					{
@@ -51,8 +51,36 @@ const sendToken = (res, role, credentials) => {
 			{ _id: 0 },
 			(user) => user
 		);
-	if (role === "employee") console.log("triggered employee");
-	if (role === "department") console.log("triggered department");
+	if (role === "employee")
+		genToken(
+			res,
+			"employee",
+			credentials,
+			{ "credentials.userid": credentials[0] },
+			{ _id: 0, name: 1, credentials: 1 },
+			(user) => {
+				return {
+					name: user.name,
+					userid: user.credentials.userid,
+					password: user.credentials.password,
+				};
+			}
+		);
+	if (role === "department")
+		genToken(
+			res,
+			"department",
+			credentials,
+			{ "admins.userid": credentials[0] },
+			{ _id: 0, admins: 1 },
+			(user) => {
+				return {
+					name: user.admins[0].name,
+					userid: user.admins[0].userid,
+					password: user.admins[0].password,
+				};
+			}
+		);
 };
 
 const verifyBasic = (req, res, auth_header) => {
