@@ -4,7 +4,10 @@ const express_graphql = require("express-graphql");
 const app = express();
 const auth = require("./middlewares/jwt_auth").auth;
 
-app.use(express.json(), auth);
+app.use(express.json(), auth, (req, res, next) => {
+	console.log(req.token_data);
+	next();
+});
 
 app.get("/", (req, res) => {
 	res.json("hi");

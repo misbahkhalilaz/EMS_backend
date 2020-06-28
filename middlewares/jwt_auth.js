@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const getUser = require("../DB/queries").queryUser;
-const JWT_KEY = "secretkey";
+const JWT_KEY = ",djgiopsezfljfglkzhjgfoiedrgtliewherog";
 
 const auth = (req, res, next) => {
 	if (req.headers.role && req.headers.authorization) {
@@ -9,38 +9,12 @@ const auth = (req, res, next) => {
 			let credentials = Buffer.from(auth_header[1], "base64")
 				.toString("ascii")
 				.split(":");
-			if (req.headers.role === "owner") {
-				getUser("owner", { userid: credentials[0] }, { _id: 0 })
-					.then((resolve) => {
-						console.log(resolve[0]);
-						if (
-							resolve &&
-							credentials[0] === resolve[0].userid &&
-							credentials[1] === resolve[0].password
-						) {
-							let token = jwt.sign(
-								{ name: resolve[0].name, role: "owner" },
-								JWT_KEY,
-								{
-									expiresIn: "24h",
-								}
-							);
-							res.json(token);
-						} else res.json("bad credentials");
-					})
-					.catch((reject) => {
-						console.log(reject);
-					});
-			}
+			if (["owner", "employee", "department"].includes(req.headers.role)) {
+				sendToken(res, req.headers.role, credentials);
+			} else res.json("select role as: employee, owner or department");
 		}
 		if (auth_header[0] === "Bearer") {
-			jwt.verify(auth_header[1], JWT_KEY, (err, decoded) => {
-				if (err) {
-					res.json(err.message);
-				} else if (decoded.role === "admin") {
-					next();
-				}
-			});
+			verifyToken(auth_header[1], req, res, next);
 		}
 	} else {
 		res.json(
@@ -49,6 +23,57 @@ const auth = (req, res, next) => {
 	}
 };
 
-const authenticator = () => {};
+const verifyToken = (token, req, res, next) => {
+	jwt.verify(token, JWT_KEY, (err, decoded) => {
+		if (err) {
+			res.json(err.message);
+		} else if (["owner", "department", "employee"].includes(decoded.role)) {
+			req.token_data = decoded;
+			next();
+		}
+	});
+};
+
+const genToken = (res, collection, credentials, query, filter, map) => {
+	getUser(collection, query, filter, map)
+		.then((user) => {
+			console.log(user);
+			if (
+				user &&
+				credentials[0] === user.userid &&
+				credentials[1] === user.password
+			) {
+				let token = jwt.sign(
+					{
+						userid: user.userid,
+						name: user.name,
+						role: "owner",
+					},
+					JWT_KEY,
+					{
+						expiresIn: "24h",
+					}
+				);
+				res.json(token);
+			} else res.json("bad credentials");
+		})
+		.catch((reject) => {
+			console.log(reject);
+		});
+};
+
+const sendToken = (res, role, credentials) => {
+	if (role === "owner")
+		genToken(
+			res,
+			"owner",
+			credentials,
+			{ userid: credentials[0] },
+			{ _id: 0 },
+			(user) => user
+		);
+	if (role === "employee") console.log("triggered employee");
+	if (role === "department") console.log("triggered department");
+};
 
 module.exports = { auth };
