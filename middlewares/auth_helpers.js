@@ -38,7 +38,7 @@ const genToken = (res, collection, credentials, query, filter, map) => {
 		})
 		.catch((err) => {
 			console.log(err);
-			res.json("DB error");
+			res.json("DB error, or user does not exist in this collection.");
 		});
 };
 
