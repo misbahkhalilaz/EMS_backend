@@ -36,8 +36,9 @@ const genToken = (res, collection, credentials, query, filter, map) => {
 				res.json(token);
 			} else res.json("bad credentials");
 		})
-		.catch((reject) => {
-			console.log(reject);
+		.catch((err) => {
+			console.log(err);
+			res.json("DB error");
 		});
 };
 
