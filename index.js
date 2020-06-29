@@ -4,6 +4,8 @@ const express_graphql = require("express-graphql");
 const app = express();
 const auth = require("./middlewares/auth").auth;
 const url = require("url");
+const schema = require("./GraphQL/schema");
+const { buildSchema } = require("graphql");
 
 app.use(express.json(), auth, (req, res, next) => {
 	console.log(req.token_data);
@@ -24,9 +26,14 @@ app.get(
 	(req, res, next) => {
 		req.token_data.role === "owner" ? next() : res.json("unauthorized access.");
 	},
-	(req, res) => {
-		res.json(req.token_data);
-	}
+	express_graphql({
+		schema: buildSchema(`type Query {
+    test: String!}`),
+		rootValue: function test() {
+			return "hi";
+		},
+		graphiql: false,
+	})
 );
 
 app.get(
