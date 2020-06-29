@@ -1,5 +1,4 @@
-const verifyBasic = require("./auth_helpers").verifyBasic;
-const verifyToken = require("./auth_helpers").verifyToken;
+const { verifyBasic, verifyToken } = require("./auth_helpers");
 
 const auth = (req, res, next) => {
 	if (req.headers.role && req.headers.authorization) {
