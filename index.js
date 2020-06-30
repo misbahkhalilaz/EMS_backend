@@ -1,11 +1,6 @@
 const express = require("express");
-const graphql = require("graphql");
-const express_graphql = require("express-graphql");
 const app = express();
 const auth = require("./middlewares/auth").auth;
-const url = require("url");
-const schema = require("./GraphQL/schema");
-const { buildSchema } = require("graphql");
 const { owner_gql } = require("./GraphQL/graphql");
 
 app.use(express.json(), auth, (req, res, next) => {
