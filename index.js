@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const auth = require("./middlewares/auth").auth;
+const express_graphql = require("express-graphql");
 const {
 	owner_gql,
 	employee_gql,
@@ -25,19 +26,19 @@ app.get("/", (req, res) => {
 app.get(
 	"/owner",
 	(req, res, next) => checkAccess(req, res, next, ["owner"]),
-	owner_gql
+	express_graphql((req) => owner_gql(req))
 );
 
 app.get(
 	"/employee",
 	(req, res, next) => checkAccess(req, res, next, ["employee"]),
-	employee_gql
+	express_graphql((req) => employee_gql(req))
 );
 
 app.get(
 	"/department",
 	(req, res, next) => checkAccess(req, res, next, ["department"]),
-	department_gql
+	express_graphql((req) => department_gql(req))
 );
 
 app.listen(4000, () => {

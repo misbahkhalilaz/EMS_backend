@@ -1,3 +1,18 @@
-const hello = (args) => "hi";
+const hello = (req) => {
+	console.log(req);
+	return "hi";
+};
 
-module.exports = { hello };
+const employee_resolver = (req) => ({
+	hello: () => hello(req.token_data),
+});
+
+const owner_resolver = (req) => ({
+	hello: () => hello(req.token_data),
+});
+
+const department_resolver = (req) => ({
+	hello: () => hello(req.token_data),
+});
+
+module.exports = { employee_resolver, owner_resolver, department_resolver };
