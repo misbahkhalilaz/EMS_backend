@@ -1,7 +1,17 @@
 const express = require("express");
 const app = express();
 const auth = require("./middlewares/auth").auth;
-const { owner_gql } = require("./GraphQL/graphql");
+const {
+	owner_gql,
+	employee_gql,
+	department_gql,
+} = require("./GraphQL/graphql");
+
+const checkAccess = (req, res, next, role) => {
+	role.includes(req.token_data.role)
+		? next()
+		: res.json("unauthorized access. Use path /" + req.token_data.role);
+};
 
 app.use(express.json(), auth, (req, res, next) => {
 	console.log(req.token_data);
@@ -14,36 +24,20 @@ app.get("/", (req, res) => {
 
 app.get(
 	"/owner",
-	(req, res, next) => {
-		req.token_data.role === "owner"
-			? next()
-			: res.json("unauthorized access. Use path /" + req.token_data.role);
-	},
+	(req, res, next) => checkAccess(req, res, next, ["owner"]),
 	owner_gql
 );
 
 app.get(
 	"/employee",
-	(req, res, next) => {
-		req.token_data.role === "employee"
-			? next()
-			: res.json("unauthorized access. Use path /" + req.token_data.role);
-	},
-	(req, res) => {
-		res.json(req.token_data);
-	}
+	(req, res, next) => checkAccess(req, res, next, ["employee"]),
+	employee_gql
 );
 
 app.get(
 	"/department",
-	(req, res, next) => {
-		req.token_data.role === "department"
-			? next()
-			: res.json("unauthorized access. Use path /" + req.token_data.role);
-	},
-	(req, res) => {
-		res.json(req.token_data);
-	}
+	(req, res, next) => checkAccess(req, res, next, ["department"]),
+	department_gql
 );
 
 app.listen(4000, () => {
