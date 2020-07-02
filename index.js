@@ -19,26 +19,26 @@ app.use(express.json(), auth, (req, res, next) => {
 	next();
 });
 
-app.get("/", (req, res) => {
-	res.json("please use /" + req.token_data.role + " route");
-});
+// app.get("/", (req, res) => {
+// 	res.json("please use /" + req.token_data.role + " route");
+// });
 
-app.get(
+app.use(
 	"/owner",
 	(req, res, next) => checkAccess(req, res, next, ["owner"]),
 	express_graphql((req) => owner_gql(req))
 );
 
-app.get(
-	"/employee",
-	(req, res, next) => checkAccess(req, res, next, ["employee"]),
-	express_graphql((req) => employee_gql(req))
-);
-
-app.get(
+app.use(
 	"/department",
 	(req, res, next) => checkAccess(req, res, next, ["department"]),
 	express_graphql((req) => department_gql(req))
+);
+
+app.use(
+	"/employee",
+	(req, res, next) => checkAccess(req, res, next, ["employee"]),
+	express_graphql((req) => employee_gql(req))
 );
 
 app.listen(4000, () => {

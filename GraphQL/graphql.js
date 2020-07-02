@@ -1,5 +1,4 @@
-const express_graphql = require("express-graphql");
-const { schema } = require("./schema");
+const { schema, owner_schema } = require("./schema");
 const {
 	employee_resolver,
 	department_resolver,
@@ -7,7 +6,7 @@ const {
 } = require("./resolvers");
 
 const owner_gql = (req) => ({
-	schema,
+	schema: owner_schema,
 	rootValue: owner_resolver(req),
 	graphiql: false,
 });
