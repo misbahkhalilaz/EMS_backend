@@ -6,7 +6,7 @@ const owner_schema = buildSchema(`
 		}
 
 		type Mutation {
-			addDepartment: department
+			addDepartment(_id: String): department
 		}
 
 		input userInput {

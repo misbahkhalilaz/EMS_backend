@@ -13,7 +13,7 @@ const owner_gql = (req) => ({
 
 const employee_gql = (req) => ({
 	schema,
-	rootValue: employee_resolver(req),
+	rootValue: employee_resolver(args, req),
 	graphiql: false,
 });
 

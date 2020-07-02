@@ -3,7 +3,8 @@ const hello = (req) => {
 	return "hi";
 };
 
-const add_department = (req) => {
+const add_department = (args, req) => {
+	console.log(args._id);
 	console.log(req.token_data);
 	return {
 		_id: "id",
@@ -23,8 +24,8 @@ const employee_resolver = (req) => ({
 });
 
 const owner_resolver = (req) => ({
-	hello: () => hello(req.token_data),
-	addDepartment: () => add_department(req),
+	hello: (args) => hello(req.token_data),
+	addDepartment: (args) => add_department(args, req),
 });
 
 const department_resolver = (req) => ({
