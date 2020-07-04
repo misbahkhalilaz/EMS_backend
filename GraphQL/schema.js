@@ -6,10 +6,16 @@ const owner_schema = buildSchema(`
 		}
 
 		type Mutation {
-			addDepartment(_id: String): department
+			addDepartment(department: Department): String
 		}
 
-		input userInput {
+		input Department {
+			_id: String!,
+			name: String!,
+			admins: [User!]!
+		}
+
+		input User {
 			name: String!,
 			userid: String!,
 			password: String!

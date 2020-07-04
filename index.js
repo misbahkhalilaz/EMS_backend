@@ -14,14 +14,7 @@ const checkAccess = (req, res, next, role) => {
 		: res.json("unauthorized access. Use path /" + req.token_data.role);
 };
 
-app.use(express.json(), auth, (req, res, next) => {
-	console.log(req.token_data);
-	next();
-});
-
-// app.get("/", (req, res) => {
-// 	res.json("please use /" + req.token_data.role + " route");
-// });
+app.use(express.json(), auth);
 
 app.use(
 	"/owner",

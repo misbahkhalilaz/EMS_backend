@@ -16,7 +16,7 @@ const verifyToken = (req, res, next, token) => {
 const genToken = (res, collection, credentials, query, filter, map) => {
 	getUser(collection, query, filter, map)
 		.then((user) => {
-			console.log(user);
+			// console.log(user);
 			if (
 				user &&
 				credentials[0] === user.userid &&
