@@ -22,10 +22,20 @@ let queryUser = (collection_name, query, filter, mapcallback) =>
 		return res.map(mapcallback)[0];
 	});
 
+// CRUD owner
+
 let insertDepartment = (department) =>
-	queryDB("department", (collection) =>
-		collection.insertOne(department)
-	).then((res) => console.log(res));
+	queryDB("department", (collection) => collection.insertOne(department));
+
+let getDepartments = () =>
+	queryDB("department", (collection) => collection.find().toArray());
+
+let updateDepartment = () => {};
+
+let deleteDepartment = (_id) =>
+	queryDB("department", (collection) => collection.remove({ _id }));
+
+// deleteDepartment("ahkajk").then((res) => console.log(res));
 
 // insertDepartment({ id: 2431 });
 
@@ -46,4 +56,10 @@ let insertDepartment = (department) =>
 // 	})
 // 	.catch((err) => console.log(err));
 
-module.exports = { queryUser, insertDepartment };
+module.exports = {
+	queryUser,
+	insertDepartment,
+	getDepartments,
+	updateDepartment,
+	deleteDepartment,
+};

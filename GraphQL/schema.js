@@ -1,12 +1,13 @@
 const { buildSchema } = require("graphql");
 
-const owner_schema = buildSchema(`
+const schema = buildSchema(`
 		type Query {
-			hello: String
+			readDepartments: [department]
 		}
 
 		type Mutation {
-			addDepartment(department: Department): String
+			createDepartment(department: Department): String
+			deleteDepartment(_id: String!): String
 		}
 
 		input Department {
@@ -34,14 +35,4 @@ const owner_schema = buildSchema(`
 		}
 		`);
 
-const schema = buildSchema(`
-		type Query {
-			hello: String
-		}
-
-		type user {
-			name: String!
-		}
-		`);
-
-module.exports = { schema, owner_schema };
+module.exports = { schema };

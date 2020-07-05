@@ -1,27 +1,33 @@
-const { insertDepartment } = require("../DB/queries");
+const {
+	insertDepartment,
+	getDepartments,
+	deleteDepartment,
+} = require("../DB/queries");
 
-const hello = (args, req) => {
-	console.log(req);
-	return "hi";
+//CRUD resolvers owner
+const create_department = (args, req) => {
+	if (req.token_data.role === "owner")
+		return insertDepartment(args.department)
+			.then((res) => res.ops[0]._id)
+			.catch((err) => err);
+	else throw "access denied for " + req.token_data.role;
 };
 
-const add_department = (args, req) => {
-	insertDepartment(args.department)
-		.then((res) => JSON.stringify(res))
-		.catch((err) => JSON.stringify(err));
+const read_departments = (args, req) => {
+	if (req.token_data.role === "owner") return getDepartments();
+	else throw "access denied for " + req.token_data.role;
 };
 
-const employee_resolver = (req) => ({
-	hello: () => hello(req.token_data),
+const delete_department = (args, req) => {
+	if (req.token_data.role === "owner")
+		return deleteDepartment(args._id).then((res) => res.result.n);
+	else throw "access denied for " + req.token_data.role;
+};
+
+const resolver = (req) => ({
+	createDepartment: (args) => create_department(args, req),
+	readDepartments: (args) => read_departments(args, req),
+	deleteDepartment: (args) => delete_department(args, req),
 });
 
-const owner_resolver = (req) => ({
-	hello: (args) => hello(args, req.token_data),
-	addDepartment: (args) => add_department(args, req),
-});
-
-const department_resolver = (req) => ({
-	hello: (args) => hello(args, req.token_data),
-});
-
-module.exports = { employee_resolver, owner_resolver, department_resolver };
+module.exports = { resolver };
