@@ -9,7 +9,7 @@ app.use(express.json(), auth);
 
 app.use(
 	"/",
-	((req) =>
+	(() =>
 		express_graphql((req) => ({
 			schema,
 			rootValue: resolver(req),

@@ -30,7 +30,10 @@ let insertDepartment = (department) =>
 let getDepartments = () =>
 	queryDB("department", (collection) => collection.find().toArray());
 
-let updateDepartment = () => {};
+let updateDepartment = (_id, department) =>
+	queryDB("department", (collection) =>
+		collection.replaceOne({ _id }, department)
+	);
 
 let deleteDepartment = (_id) =>
 	queryDB("department", (collection) => collection.remove({ _id }));

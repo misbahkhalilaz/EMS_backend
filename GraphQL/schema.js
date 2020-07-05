@@ -6,8 +6,9 @@ const schema = buildSchema(`
 		}
 
 		type Mutation {
-			createDepartment(department: Department): String
-			deleteDepartment(_id: String!): String
+			createDepartment(department: Department): Int
+			deleteDepartment(_id: String!): Int
+			updateDepartment(_id: String!, department: Department): Int
 		}
 
 		input Department {
