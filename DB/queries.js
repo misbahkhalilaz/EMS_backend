@@ -38,7 +38,7 @@ let updateDepartment = (_id, department) =>
 let deleteDepartment = (_id) =>
 	queryDB("department", (collection) => collection.remove({ _id }));
 
-// deleteDepartment("ahkajk").then((res) => console.log(res));
+// deleteDepartment("admin").then((res) => console.log(res));
 
 // insertDepartment({ id: 2431 });
 

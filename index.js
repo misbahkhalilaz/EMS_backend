@@ -4,6 +4,9 @@ const auth = require("./middlewares/auth").auth;
 const express_graphql = require("express-graphql");
 const { schema } = require("./GraphQL/schema");
 const { resolver } = require("./GraphQL/resolvers");
+const cors = require("cors");
+
+app.use(cors());
 
 app.use(express.json(), auth);
 
