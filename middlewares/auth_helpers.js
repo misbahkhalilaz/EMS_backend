@@ -5,7 +5,7 @@ const JWT_KEY = ",djgiopsezfljfglkzhjgfoiedrgtliewherog";
 const verifyToken = (req, res, next, token) => {
 	jwt.verify(token, JWT_KEY, (err, decoded) => {
 		if (err) {
-			res.json(err.message);
+			res.json("token error");
 		} else if (["owner", "department", "employee"].includes(decoded.role)) {
 			req.token_data = decoded;
 			next();
@@ -33,12 +33,19 @@ const genToken = (res, collection, credentials, query, filter, map) => {
 						expiresIn: "24h",
 					}
 				);
-				res.json(token);
+				res.json({
+					token,
+					user: {
+						userid: user.userid,
+						name: user.name,
+						role: collection,
+					},
+				});
 			} else res.json("bad credentials");
 		})
 		.catch((err) => {
 			console.log(err);
-			res.json("DB error, or user does not exist in this collection.");
+			res.json("bad credentials");
 		});
 };
 
