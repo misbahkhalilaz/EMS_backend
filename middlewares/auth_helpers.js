@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const getUser = require("../DB/queries").queryUser;
-const JWT_KEY = ",djgiopsezfljfglkzhjgfoiedrgtliewherog";
+const JWT_KEY = "jho3h45lj9824hiu7yri2744gr7uyge28";
 
 const verifyToken = (req, res, next, token) => {
 	jwt.verify(token, JWT_KEY, (err, decoded) => {
@@ -45,7 +45,7 @@ const genToken = (res, collection, credentials, query, filter, map) => {
 		})
 		.catch((err) => {
 			console.log(err);
-			res.json("bad credentials");
+			res.json("bad credentials or db err");
 		});
 };
 
