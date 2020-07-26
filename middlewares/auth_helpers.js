@@ -30,7 +30,7 @@ const genToken = (res, collection, credentials, query, filter, map) => {
 					},
 					JWT_KEY,
 					{
-						expiresIn: "24h",
+						expiresIn: "5s",
 					}
 				);
 				res.json({
