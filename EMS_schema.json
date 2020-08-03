@@ -99,13 +99,14 @@
     "Posted_date": "String",
     "deadline": "Date",
     "Progress": "based on tasks completion without delay",
+    "efficiency": "percent",
     "tasks": [
       {
         "member_id": "String",
         "task_title": "String",
         "posted_date": "date",
         "deadline": "date",
-        "completed": "bool",
+        "status": "string",
         "delayed": "bool"
       }
     ],
