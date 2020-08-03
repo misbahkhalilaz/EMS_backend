@@ -6,7 +6,8 @@ const schema = buildSchema(`
 		}
 
 		type Mutation {
-			createEmployee(employee: Employee): Int
+			createEmployee(employee: Employee!): Int
+			createJob(job: Job!): Int
 		}
 
 		input Employee {
@@ -20,6 +21,23 @@ const schema = buildSchema(`
 			address: String!,
 			joining_date: String!,
 			password: String!
+		}
+
+		input Job {
+			_id: String!,
+			title: String!,
+			pay: Int!,
+			start_time: String!,
+			exit_time: String!,
+			late_charges: Int!,
+			abs_charges: Int!,
+			fixed_allowances: [Allowance]
+		}
+
+		input Allowance {
+			title: String!,
+			month: Int,
+			amount: Int
 		}
 
 		input Department {
