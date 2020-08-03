@@ -9,6 +9,20 @@ const schema = buildSchema(`
 			createDepartment(department: Department): Int
 			deleteDepartment(_id: String!): Int
 			updateDepartment(_id: String!, department: Department): Int
+			createEmployee(employee: Employee): Int
+		}
+
+		input Employee {
+			_id: String!,
+			did: String!,
+			job_id: String!,
+			first_name: String!,
+			last_name: String,
+			mobile: String!,
+			email: String!,
+			address: String!,
+			joining_date: String!,
+			password: String!
 		}
 
 		input Department {
