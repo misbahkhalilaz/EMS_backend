@@ -16,7 +16,7 @@ const verifyToken = (req, res, next, token) => {
 const genToken = (res, collection, credentials, query, filter, map) => {
   getUser(collection, query, filter, map)
     .then((user) => {
-      // console.log(user);
+      console.log(user);
       if (
         user &&
         credentials[0] === user.userid &&
@@ -25,7 +25,8 @@ const genToken = (res, collection, credentials, query, filter, map) => {
         let token = jwt.sign(
           {
             userid: user.userid,
-            name: user.name,
+            first_name: user.first_name,
+            last_name: user.last_name,
             role: collection,
           },
           JWT_KEY,
@@ -37,7 +38,8 @@ const genToken = (res, collection, credentials, query, filter, map) => {
           token,
           user: {
             userid: user.userid,
-            name: user.name,
+            first_name: user.first_name,
+            last_name: user.last_name,
             role: collection,
           },
         });
@@ -64,13 +66,15 @@ const sendToken = (res, role, credentials) => {
       res,
       "employee",
       credentials,
-      { "credentials.userid": credentials[0] },
-      { _id: 0, name: 1, credentials: 1 },
+      { _id: credentials[0] },
+      { _id: 1, first_name: 1, last_name: 1, password: 1 },
       (user) => {
+        console.log(user);
         return {
-          name: user.name,
-          userid: user.credentials.userid,
-          password: user.credentials.password,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          userid: user._id,
+          password: user.password,
         };
       }
     );

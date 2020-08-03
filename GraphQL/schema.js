@@ -6,9 +6,6 @@ const schema = buildSchema(`
 		}
 
 		type Mutation {
-			createDepartment(department: Department): Int
-			deleteDepartment(_id: String!): Int
-			updateDepartment(_id: String!, department: Department): Int
 			createEmployee(employee: Employee): Int
 		}
 

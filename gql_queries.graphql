@@ -1,0 +1,16 @@
+mutation {
+  createEmployee(
+    employee: {
+      _id: "BK0001"
+      did: "admin"
+      job_id: "DEV0001"
+      first_name: "MK"
+      last_name: "Az"
+      mobile: "564564564"
+      email: "any@mail.com"
+      address: "house:sds"
+      joining_date: "date here"
+      password: "designer"
+    }
+  )
+}
