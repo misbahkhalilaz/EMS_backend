@@ -16,7 +16,7 @@ const verifyToken = (req, res, next, token) => {
 const genToken = (res, collection, credentials, query, filter, map) => {
 	getUser(collection, query, filter, map)
 		.then((user) => {
-			// console.log(user);
+			console.log(user);
 			if (
 				user &&
 				credentials[0] === user.userid &&
@@ -30,7 +30,7 @@ const genToken = (res, collection, credentials, query, filter, map) => {
 					},
 					JWT_KEY,
 					{
-						expiresIn: "5s",
+						expiresIn: "24h",
 					}
 				);
 				res.json({
@@ -82,6 +82,7 @@ const sendToken = (res, role, credentials) => {
 			{ "admins.userid": credentials[0] },
 			{ _id: 0, admins: 1 },
 			(user) => {
+				// console.log(user);
 				return {
 					name: user.admins[0].name,
 					userid: user.admins[0].userid,
