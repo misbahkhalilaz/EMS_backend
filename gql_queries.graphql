@@ -1,0 +1,46 @@
+mutation {
+  createEmployee(
+    employee: {
+      _id: "BK0001"
+      did: "admin"
+      job_id: "DEV0001"
+      first_name: "MK"
+      last_name: "Az"
+      mobile: "564564564"
+      email: "any@mail.com"
+      address: "house:sds"
+      joining_date: "date here"
+      password: "designer"
+    }
+  )
+}
+
+mutation {
+  createJob(
+    job: {
+      _id: "DEV0002"
+      title: "dev"
+      pay: 100000
+      start_time: "9:00"
+      exit_time: "6:00"
+      late_charges: 200
+      abs_charges: 1000
+      fixed_allowances: [
+        { title: "car mentanence", month: 6, amount: 50000 }
+        { title: "medical", month: 9, amount: 20000 }
+      ]
+    }
+  )
+}
+
+mutation {
+  createProject(
+    project: {
+      title: "sample"
+      posted_date: "today"
+      deadline: "12-05-2020"
+      leading_member: "MK0001"
+      other_members: ["BK0001", "BU0002", "NE0004"]
+    }
+  )
+}

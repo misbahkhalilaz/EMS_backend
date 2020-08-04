@@ -6,9 +6,47 @@ const schema = buildSchema(`
 		}
 
 		type Mutation {
-			createDepartment(department: Department): Int
-			deleteDepartment(_id: String!): Int
-			updateDepartment(_id: String!, department: Department): Int
+			createEmployee(employee: Employee!): Int
+			createJob(job: Job!): Int
+			createProject(project: Project!): Int
+		}
+
+		input Employee {
+			_id: String!,
+			did: String!,
+			job_id: String!,
+			first_name: String!,
+			last_name: String,
+			mobile: String!,
+			email: String!,
+			address: String!,
+			joining_date: String!,
+			password: String!
+		}
+
+		input Job {
+			_id: String!,
+			title: String!,
+			pay: Int!,
+			start_time: String!,
+			exit_time: String!,
+			late_charges: Int!,
+			abs_charges: Int!,
+			fixed_allowances: [Allowance]
+		}
+
+		input Allowance {
+			title: String!,
+			month: Int,
+			amount: Int
+		}
+
+		input Project {
+			title: String!,
+			posted_date: String!,
+			deadline: String,
+			leading_member: String!,
+			other_members: [String]
 		}
 
 		input Department {

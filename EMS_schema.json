@@ -1,0 +1,121 @@
+{
+  "department": {
+    "_id": "String",
+    "name": "String",
+    "admins": [
+      {
+        "name": "String",
+        "userid": "String",
+        "password": "String"
+      }
+    ],
+    "broadcasts": [
+      {
+        "sender": "String",
+        "timestamp": "string",
+        "title": "String",
+        "message": "String",
+        "event_date": "date"
+      }
+    ]
+  },
+
+  "Employee": {
+    "_id": "String",
+    "did": "String",
+    "jod_id": "String",
+    "name": "String",
+    "mobile": "String",
+    "email": "String",
+    "address": "String",
+    "joining_date": "date",
+    "password": "String",
+    "chat_admin": [
+      {
+        "timestamp": "string",
+        "msg": "string",
+        "sender": "String"
+      }
+    ]
+  },
+
+  "attendance": {
+    "employee_id": "String",
+    "date": "date",
+    "time": {
+      "entry_time": "time",
+      "exit_time": "time"
+    },
+    "present": "bool",
+    "leave": "bool",
+    "penalty/bonus": "int"
+  },
+
+  "jobs": {
+    "_id": "String",
+    "title": "String",
+    "pay": "int",
+    "start_time": "int",
+    "exit_time": "int",
+    "late_charges": "int",
+    "abs_charges": "int",
+    "early_exit_charges": "Int",
+    "fixed_allowances": [
+      {
+        "title": "String",
+        "month": "int",
+        "amount": "int"
+      }
+    ]
+  },
+
+  "salary": {
+    "Emp_id": "String",
+    "month": "int",
+    "year": "int",
+    "date": "date",
+    "pay": "int",
+    "bonus": "int",
+    "penalty": "int",
+    "allowances": {
+      "dedicated": [
+        {
+          "title": "String",
+          "amount": "int"
+        }
+      ],
+      "fixed": "int"
+    },
+    "total_salary": "int",
+    "description": "String"
+  },
+
+  "projects": {
+    "title": "String",
+    "status": "String",
+    "members": [],
+    "leading_member": "string",
+    "did": "String",
+    "Posted_date": "String",
+    "deadline": "Date",
+    "Progress": "based on tasks completion without delay",
+    "efficiency": "percent",
+    "tasks": [
+      {
+        "member_id": "String",
+        "task_title": "String",
+        "posted_date": "date",
+        "deadline": "date",
+        "status": "string",
+        "delayed": "bool"
+      }
+    ],
+    "chat": [
+      {
+        "sender": "String",
+        "message": "String",
+        "timestamp": "string"
+      }
+    ]
+  }
+}
