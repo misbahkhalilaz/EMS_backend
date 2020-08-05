@@ -4,6 +4,7 @@ const schema = buildSchema(`
 		type Query {
 			readDepartments: [department]
 			readJobs: [job]
+			readEmployees: [employee]
 		}
 
 		type Mutation {
@@ -13,6 +14,19 @@ const schema = buildSchema(`
 		}
 
 		input Employee {
+			_id: String!,
+			did: String!,
+			job_id: String!,
+			first_name: String!,
+			last_name: String,
+			mobile: String!,
+			email: String!,
+			address: String!,
+			joining_date: Int!,
+			password: String!
+		}
+
+		type employee {
 			_id: String!,
 			did: String!,
 			job_id: String!,

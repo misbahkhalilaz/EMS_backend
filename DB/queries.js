@@ -39,6 +39,9 @@ let insertProject = (proj) =>
 let getJobs = () =>
   queryDB("jobs", (collection) => collection.find({}).toArray());
 
+let getEmployees = () =>
+  queryDB("employee", (collection) => collection.find({}).toArray());
+
 // CRUD owner
 
 // let insertDepartment = (department) =>
@@ -81,6 +84,7 @@ module.exports = {
   insertJob,
   insertProject,
   getJobs,
+  getEmployees,
   //   insertDepartment,
   //   getDepartments,
   //   updateDepartment,
