@@ -44,3 +44,20 @@ mutation {
     }
   )
 }
+
+query {
+  readJobs {
+    _id
+    title
+    pay
+    start_time
+    exit_time
+    late_charges
+    abs_charges
+    fixed_allowances {
+      title
+      month
+      amount
+    }
+  }
+}

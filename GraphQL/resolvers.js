@@ -6,6 +6,7 @@ const {
   insertEmployee,
   insertJob,
   insertProject,
+  getJobs,
 } = require("../DB/queries");
 
 //CRUD resolvers owner
@@ -55,6 +56,12 @@ let create_project = (args, req) => {
   } else throw "access denied for " + req.token_data.role;
 };
 
+let read_jobs = (args, req) => {
+  if (req.token_data.role === "department") {
+    return getJobs();
+  } else throw "access denied for " + req.token_data.role;
+};
+
 const resolver = (req) => ({
   //   createDepartment: (args) => create_department(args, req),
   //   readDepartments: (args) => read_departments(args, req),
@@ -63,6 +70,7 @@ const resolver = (req) => ({
   createEmployee: (args) => create_employee(args, req),
   createJob: (args) => create_job(args, req),
   createProject: (args) => create_project(args, req),
+  readJobs: (args) => read_jobs(args, req),
 });
 
 module.exports = { resolver };

@@ -3,6 +3,7 @@ const { buildSchema } = require("graphql");
 const schema = buildSchema(`
 		type Query {
 			readDepartments: [department]
+			readJobs: [job]
 		}
 
 		type Mutation {
@@ -35,7 +36,24 @@ const schema = buildSchema(`
 			fixed_allowances: [Allowance]
 		}
 
+		type job {
+			_id: String!,
+			title: String!,
+			pay: Int!,
+			start_time: String!,
+			exit_time: String!,
+			late_charges: Int!,
+			abs_charges: Int!,
+			fixed_allowances: [allowance]
+		}
+
 		input Allowance {
+			title: String!,
+			month: Int,
+			amount: Int
+		}
+
+		type allowance {
 			title: String!,
 			month: Int,
 			amount: Int
@@ -47,12 +65,6 @@ const schema = buildSchema(`
 			deadline: String,
 			leading_member: String!,
 			other_members: [String]
-		}
-
-		input Department {
-			_id: String!,
-			name: String!,
-			admins: [User!]!
 		}
 
 		input User {

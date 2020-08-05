@@ -36,6 +36,9 @@ let insertProject = (proj) =>
     collection.insertOne({ ...proj, tasks: [], chat: [] })
   );
 
+let getJobs = () =>
+  queryDB("jobs", (collection) => collection.find({}).toArray());
+
 // CRUD owner
 
 // let insertDepartment = (department) =>
@@ -77,6 +80,7 @@ module.exports = {
   insertEmployee,
   insertJob,
   insertProject,
+  getJobs,
   //   insertDepartment,
   //   getDepartments,
   //   updateDepartment,
