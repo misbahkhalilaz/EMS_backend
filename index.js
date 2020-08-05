@@ -1,21 +1,18 @@
 const express = require("express");
 const app = express();
-// const CronJob = require("cron").CronJob;
+const CronJob = require("cron").CronJob;
 const auth = require("./middlewares/auth").auth;
 const express_graphql = require("express-graphql");
 const { schema } = require("./GraphQL/schema");
 const { resolver } = require("./GraphQL/resolvers");
 const cors = require("cors");
 
-// let job = new CronJob(
-//   "*/10 * * * * *",
-//   () => console.log("hi"),
-//   null,
-//   false,
-//   "Asia/Karachi"
-// );
+const job = new CronJob("00 00 00 * * 1-5", function () {
+	const d = new Date();
+	console.log("Midnight:", d);
+});
 
-// job.start();
+job.start();
 
 app.use(cors());
 

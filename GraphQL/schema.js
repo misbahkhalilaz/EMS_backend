@@ -21,7 +21,7 @@ const schema = buildSchema(`
 			mobile: String!,
 			email: String!,
 			address: String!,
-			joining_date: String!,
+			joining_date: Int!,
 			password: String!
 		}
 
