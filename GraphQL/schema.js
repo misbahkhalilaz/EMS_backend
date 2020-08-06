@@ -5,6 +5,7 @@ const schema = buildSchema(`
 			readDepartments: [department]
 			readJobs: [job]
 			readEmployees: [employee]
+			readProjects: [project]
 		}
 
 		type Mutation {
@@ -47,7 +48,6 @@ const schema = buildSchema(`
 			exit_time: String!,
 			late_charges: Int!,
 			abs_charges: Int!,
-			fixed_allowances: [Allowance]
 		}
 
 		type job {
@@ -58,27 +58,34 @@ const schema = buildSchema(`
 			exit_time: String!,
 			late_charges: Int!,
 			abs_charges: Int!,
-			fixed_allowances: [allowance]
 		}
 
-		input Allowance {
-			title: String!,
-			month: Int,
-			amount: Int
-		}
-
-		type allowance {
-			title: String!,
-			month: Int,
-			amount: Int
-		}
-
+		
 		input Project {
+			_id: String!,
 			title: String!,
-			posted_date: String!,
-			deadline: String,
+			posted_date: Int!,
+			deadline: Int!,
 			leading_member: String!,
 			other_members: [String]
+		}
+
+		type project {
+			_id: String!,
+			title: String!,
+			posted_date: Int!,
+			deadline: Int!,
+			leading_member: String!,
+			other_members: [String],
+			completed: Boolean!,
+			tasks: [task]
+		}
+
+		type task {
+			member_id: String!,
+			task: String!,
+			deadline: Int!,
+			completed: Boolean!
 		}
 
 		input User {
