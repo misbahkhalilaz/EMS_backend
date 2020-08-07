@@ -8,6 +8,7 @@ const verifyToken = (req, res, next, token) => {
 			res.json("token error");
 		} else if (["owner", "department", "employee"].includes(decoded.role)) {
 			req.token_data = decoded;
+			console.log(decoded);
 			next();
 		}
 	});

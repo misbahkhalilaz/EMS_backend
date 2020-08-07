@@ -6,6 +6,7 @@ const express_graphql = require("express-graphql");
 const { schema } = require("./GraphQL/schema");
 const { resolver } = require("./GraphQL/resolvers");
 const cors = require("cors");
+const { query } = require("express");
 const MongoClient = require("mongodb").MongoClient;
 const server = require("http").createServer(app);
 

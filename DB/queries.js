@@ -116,7 +116,7 @@ let updateJob = (job) =>
 		collection.updateOne({ _id: job._id }, { $set: { ...job } })
 	);
 
-let readCurrentSalaries = () => {
+let readCurrentSalaries = () =>
 	queryDB("salary", (collection) =>
 		collection
 			.find({
@@ -135,8 +135,95 @@ let readCurrentSalaries = () => {
 			.project({ _id: 0 })
 			.toArray()
 	);
-	// ).then((res) => console.log(res));
+
+let getBio = (id) =>
+	queryDB("employee", (collection) =>
+		collection
+			.find({ _id: id })
+			.project({
+				_id: 1,
+				first_name: 1,
+				last_name: 1,
+				email: 1,
+				joining_date: 1,
+				job_id: 1,
+			})
+			.toArray()
+	).then((res) => res[0]);
+
+let getJob = (id) =>
+	queryDB("jobs", (collection) => collection.find({ _id: id }).toArray()).then(
+		(res) => res[0]
+	);
+
+let timediff = (time, timestamp) => {
+	var t = time.split(":");
+	return (
+		-parseInt(timestamp + t[0] * 3600 + t[1] * 60).toFixed(0) +
+		parseInt((new Date(Date.now()).getTime() / 1000 + 5 * 3600).toFixed(0))
+	);
 };
+
+let markAtd = (id) =>
+	queryDB("attendance", (collection) =>
+		collection
+			.find({
+				$and: [
+					{
+						date: {
+							$gt:
+								parseInt((new Date(Date.now()).getTime() / 1000).toFixed(0)) -
+								19 * 3600,
+						},
+					},
+					{ employee_id: id },
+				],
+			})
+			.toArray()
+	)
+		.then((atd) => atd[0])
+		.then((atd) =>
+			queryDB("jobs", (collection) =>
+				collection.find({ _id: atd.job_id }).toArray()
+			)
+				.then((jobs) => jobs[0])
+				.then((jobs) =>
+					queryDB("attendance", (collection) =>
+						collection.updateOne(
+							{ _id: atd._id },
+							{
+								$set:
+									atd.entry_time === null
+										? {
+												present:
+													timediff(jobs.start_time, atd.date) < 3600
+														? true
+														: false,
+												penalty:
+													timediff(jobs.start_time, atd.date) < 15 * 60
+														? 0
+														: timediff(jobs.start_time, atd.date) < 3600
+														? jobs.late_charges
+														: jobs.abs_charges,
+												entry_time: parseInt(
+													(
+														new Date(Date.now()).getTime() / 1000 +
+														5 * 3600
+													).toFixed(0)
+												),
+										  }
+										: {},
+							}
+						)
+					).then((res) => res.result.n)
+				)
+				.catch((err) => console.log(err))
+		);
+
+let getMonthlyAtdEmp = (id, month, year) =>
+	getMonthlyAtd(month, year).then((res) =>
+		res.filter((atd) => atd.employee_id === id)
+	);
 
 module.exports = {
 	queryDB,
@@ -152,4 +239,8 @@ module.exports = {
 	markLeave,
 	updateJob,
 	readCurrentSalaries,
+	getBio,
+	getJob,
+	markAtd,
+	getMonthlyAtdEmp,
 };

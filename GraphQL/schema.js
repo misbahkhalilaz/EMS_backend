@@ -9,6 +9,9 @@ const schema = buildSchema(`
 			readDailyAtd: [attendance]
 			readMonthlyAtd(month: Int!, year: Int!): [attendance]
 			readCurrentSalaries: [salary]
+			readBio: bio!
+			readJob(id: String!): job!
+			readMonthlyAtdEmp(month: Int!, year: Int!): [attendance]
 		}
 
 		type Mutation {
@@ -17,6 +20,16 @@ const schema = buildSchema(`
 			updateJob(job: Job!): Int
 			createProject(project: Project!): Int
 			markLeave(id: String!): Int
+			markAtd(id: String!): Int
+		}
+
+		type bio {
+			_id: String!,
+			first_name: String!,
+			last_name: String!,
+			email: String!,
+			joining_date: Int!,
+			job_id: String!
 		}
 
 		type salary {

@@ -10,24 +10,11 @@ const {
 	markLeave,
 	updateJob,
 	readCurrentSalaries,
+	getBio,
+	getJob,
+	markAtd,
+	getMonthlyAtdEmp,
 } = require("../DB/queries");
-
-const MongoClient = require("mongodb").MongoClient;
-
-const uri =
-	"mongodb+srv://mkaz:0438839@cluster0-ms8de.mongodb.net/EMS?retryWrites=true&w=majority";
-
-let queryDB = (collection_name, query_expression) => {
-	return new Promise((resolve) => {
-		const client = new MongoClient(uri, { useNewUrlParser: true });
-		client.connect((err) => {
-			const collection = client.db("EMS").collection(collection_name);
-			resolve(query_expression(collection));
-			client.close();
-			if (err) throw err;
-		});
-	});
-};
 
 let create_employee = (args, req) => {
 	if (req.token_data.role === "department") {
@@ -91,27 +78,18 @@ let update_job = (args, req) => {
 
 let read_current_salaries = (args, req) => {
 	if (req.token_data.role === "department") {
-		return queryDB("salary", (collection) =>
-			collection
-				.find({
-					timestamp: {
-						$gte: parseInt(
-							(
-								new Date(
-									new Date(Date.now()).getMonth().toString() +
-										"/28/" +
-										new Date(Date.now()).getFullYear().toString()
-								).getTime() / 1000
-							).toFixed(0)
-						),
-					},
-				})
-				.project({ _id: 0 })
-				.toArray()
-		);
-		// ).then((res) => console.log(res));
+		return readCurrentSalaries();
 	} else throw "access denied for " + req.token_data.role;
 };
+
+let read_bio = (args, req) => getBio(req.token_data.userid);
+
+let read_job = (args, req) => getJob(args.id);
+
+let mark_atd = (args, req) => markAtd(args.id);
+
+let read_monthly_atd_emp = (args, req) =>
+	getMonthlyAtdEmp(req.token_data.userid, args.month, args.year);
 
 const resolver = (req) => ({
 	createEmployee: (args) => create_employee(args, req),
@@ -125,6 +103,10 @@ const resolver = (req) => ({
 	markLeave: (args) => mark_leave(args, req),
 	updateJob: (args) => update_job(args, req),
 	readCurrentSalaries: (args) => read_current_salaries(args, req),
+	readBio: (args) => read_bio(args, req),
+	readJob: (args) => read_job(args, req),
+	markAtd: (args) => mark_atd(args, req),
+	readMonthlyAtdEmp: (args) => read_monthly_atd_emp(args, req),
 });
 
 module.exports = { resolver };
