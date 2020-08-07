@@ -45,43 +45,79 @@ let getEmployees = () =>
 let getProjects = () =>
 	queryDB("projects", (collection) => collection.find({}).toArray());
 
-// CRUD owner
+let getTodaysAtd = () =>
+	queryDB("attendance", (collection) =>
+		collection
+			.find({
+				date: {
+					$gt:
+						parseInt((new Date(Date.now()).getTime() / 1000).toFixed(0)) -
+						19 * 3600,
+				},
+			})
+			.toArray()
+	);
 
-// let insertDepartment = (department) =>
-// 	queryDB("department", (collection) => collection.insertOne(department));
+let getMonthlyAtd = (month, year) =>
+	queryDB("attendance", (collection) =>
+		collection
+			.find({
+				$and: [
+					{
+						date: {
+							$gte:
+								parseInt(
+									(
+										new Date(month.toString() + "/1/" + year).getTime() / 1000
+									).toFixed(0)
+								) +
+								5 * 3600,
+						},
+					},
+					{
+						date: {
+							$lt:
+								parseInt(
+									(
+										new Date(
+											(month + 1).toString() + "/1/" + year.toString()
+										).getTime() / 1000
+									).toFixed(0)
+								) -
+								19 * 3600,
+						},
+					},
+				],
+			})
+			.toArray()
+	);
 
-// let getDepartments = () =>
-// 	queryDB("department", (collection) => collection.find().toArray());
+let markLeave = (id) =>
+	queryDB("attendance", (collection) =>
+		collection.updateOne(
+			{
+				$and: [
+					{
+						date: {
+							$gt:
+								parseInt((new Date(Date.now()).getTime() / 1000).toFixed(0)) -
+								19 * 3600,
+						},
+					},
+					{ employee_id: id },
+				],
+			},
+			{ $set: { leave: true, penalty: 0 } }
+		)
+	);
 
-// let updateDepartment = (_id, department) =>
-// 	queryDB("department", (collection) =>
-// 		collection.replaceOne({ _id }, department)
-// 	);
-// let deleteDepartment = (_id) =>
-// 	queryDB("department", (collection) => collection.remove({ _id }));
-
-// deleteDepartment("admin").then((res) => console.log(res));
-
-// insertDepartment({ id: 2431 });
-
-// queryUser(
-// 	"department",
-// 	{ "admins.userid": "dpadmin" },
-// 	{ _id: 0, admins: 1 },
-// 	(user) => {
-// 		return {
-// 			name: user.admins[0].name,
-// 			userid: user.admins[0].userid,
-// 			password: user.admins[0].password,
-// 		};
-// 	}
-// )
-// 	.then((res, rej) => {
-// 		console.log(res);
-// 	})
-// 	.catch((err) => console.log(err));
+let updateJob = (job) =>
+	queryDB("jobs", (collection) =>
+		collection.updateOne({ _id: job._id }, { $set: { ...job } })
+	);
 
 module.exports = {
+	queryDB,
 	queryUser,
 	insertEmployee,
 	insertJob,
@@ -89,8 +125,8 @@ module.exports = {
 	getJobs,
 	getEmployees,
 	getProjects,
-	//   insertDepartment,
-	//   getDepartments,
-	//   updateDepartment,
-	//   deleteDepartment,
+	getTodaysAtd,
+	getMonthlyAtd,
+	markLeave,
+	updateJob,
 };

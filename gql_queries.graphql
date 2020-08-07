@@ -90,3 +90,31 @@ query {
 		}
 	}
 }
+
+query {
+	readDailyAtd {
+		employee_id
+		job_id
+		date
+		entry_time
+		present
+		leave
+		penalty
+	}
+}
+
+query {
+	readMonthlyAtd(month: 8, year: 2020) {
+		employee_id
+		job_id
+		date
+		entry_time
+		present
+		leave
+		penalty
+	}
+}
+
+mutation {
+	markLeave(id: "HF74541")
+}
