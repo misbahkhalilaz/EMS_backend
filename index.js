@@ -84,6 +84,80 @@ const job = new CronJob("00 00 00 * * 1-5", function () {
 
 job.start();
 
+const job2 = new CronJob("00 00 00 1 * *", function () {
+	let month = new Date(Date.now()).getMonth();
+	let year = new Date(Date.now()).getFullYear();
+	let sum = 0;
+
+	queryDB("attendance", (collection) =>
+		collection
+			.find({
+				$and: [
+					{
+						date: {
+							$gte:
+								parseInt(
+									(
+										new Date(month.toString() + "/1/" + year).getTime() / 1000
+									).toFixed(0)
+								) +
+								5 * 3600,
+						},
+					},
+					{
+						date: {
+							$lt:
+								parseInt(
+									(
+										new Date(
+											(month + 1).toString() + "/1/" + year.toString()
+										).getTime() / 1000
+									).toFixed(0)
+								) -
+								19 * 3600,
+						},
+					},
+				],
+			})
+			.project({ _id: 0, employee_id: 1, penalty: 1 })
+			.toArray()
+	).then((atd) =>
+		queryDB("jobs", (collection) =>
+			collection.find({}).project({ _id: 1, pay: 1 }).toArray()
+		).then((job) =>
+			queryDB("employee", (collection) =>
+				collection.find({}).project({ _id: 1, job_id: 1 }).toArray()
+			)
+				.then((emp) =>
+					emp.map((emp) => {
+						sum = 0;
+						atd
+							.filter((atd) => atd.employee_id === emp._id)
+							.forEach((element) => (sum += element.penalty));
+						return Object.assign(
+							{},
+							{},
+							{
+								employee_id: emp._id,
+								timestamp:
+									parseInt((new Date(Date.now()).getTime() / 1000).toFixed(0)) +
+									5 * 3600,
+								pay: job.filter((job) => job._id === emp.job_id)[0].pay,
+								penalty: sum,
+								total_salary:
+									job.filter((job) => job._id === emp.job_id)[0].pay - sum,
+							}
+						);
+					})
+				)
+				.then((sal) =>
+					queryDB("salary", (collection) => collection.insertMany(sal))
+				)
+		)
+	);
+});
+job2.start();
+
 app.use(cors());
 
 app.use(express.json(), auth);

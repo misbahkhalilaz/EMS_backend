@@ -116,6 +116,28 @@ let updateJob = (job) =>
 		collection.updateOne({ _id: job._id }, { $set: { ...job } })
 	);
 
+let readCurrentSalaries = () => {
+	queryDB("salary", (collection) =>
+		collection
+			.find({
+				timestamp: {
+					$gte: parseInt(
+						(
+							new Date(
+								new Date(Date.now()).getMonth().toString() +
+									"/28/" +
+									new Date(Date.now()).getFullYear().toString()
+							).getTime() / 1000
+						).toFixed(0)
+					),
+				},
+			})
+			.project({ _id: 0 })
+			.toArray()
+	);
+	// ).then((res) => console.log(res));
+};
+
 module.exports = {
 	queryDB,
 	queryUser,
@@ -129,4 +151,5 @@ module.exports = {
 	getMonthlyAtd,
 	markLeave,
 	updateJob,
+	readCurrentSalaries,
 };
