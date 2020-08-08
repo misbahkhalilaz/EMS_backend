@@ -30,16 +30,15 @@ let queryDB = (collection_name, query_expression) => {
 io.on("connection", (socket) => {
 	socket.on("join", (room) => {
 		socket.join(room);
-		io.to(room).emit("joined", room);
-		socket.on("broadcast", (bc) => {
-			queryDB("broadcast", (collection) => collection.insertOne(JSON.parse(bc)))
-				.then((res) => res.result.n)
-				.then((res) => {
-					if (res === 1) {
-						io.to(room).emit("rcv_broadcast");
-					}
-				});
-		});
+	});
+	socket.on("broadcast", (bc) => {
+		queryDB("broadcast", (collection) => collection.insertOne(JSON.parse(bc)))
+			.then((res) => res.result.n)
+			.then((res) => {
+				if (res === 1) {
+					io.to("broadcast").emit("rcv_broadcast");
+				}
+			});
 	});
 });
 
