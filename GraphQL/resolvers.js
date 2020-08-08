@@ -14,6 +14,7 @@ const {
 	getJob,
 	markAtd,
 	getMonthlyAtdEmp,
+	getBroadcasts,
 } = require("../DB/queries");
 
 let create_employee = (args, req) => {
@@ -91,6 +92,8 @@ let mark_atd = (args, req) => markAtd(args.id);
 let read_monthly_atd_emp = (args, req) =>
 	getMonthlyAtdEmp(req.token_data.userid, args.month, args.year);
 
+let read_broadcast = (args, req) => getBroadcasts();
+
 const resolver = (req) => ({
 	createEmployee: (args) => create_employee(args, req),
 	createJob: (args) => create_job(args, req),
@@ -107,6 +110,7 @@ const resolver = (req) => ({
 	readJob: (args) => read_job(args, req),
 	markAtd: (args) => mark_atd(args, req),
 	readMonthlyAtdEmp: (args) => read_monthly_atd_emp(args, req),
+	readBroadcast: (args) => read_broadcast(args, req),
 });
 
 module.exports = { resolver };

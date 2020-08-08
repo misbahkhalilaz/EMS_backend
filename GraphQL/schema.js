@@ -12,6 +12,7 @@ const schema = buildSchema(`
 			readBio: bio!
 			readJob(id: String!): job!
 			readMonthlyAtdEmp(month: Int!, year: Int!): [attendance]
+			readBroadcast: [broadcast]
 		}
 
 		type Mutation {
@@ -38,6 +39,14 @@ const schema = buildSchema(`
 			pay: Int!,
 			penalty: Int!,
 			total_salary: Int!
+		}
+
+		type broadcast {
+			_id: String!,
+			type: String!,
+			msg: String!,
+			date: Int!,
+			eventDate: Int
 		}
 
 		type attendance {

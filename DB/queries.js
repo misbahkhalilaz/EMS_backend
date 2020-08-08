@@ -225,6 +225,17 @@ let getMonthlyAtdEmp = (id, month, year) =>
 		res.filter((atd) => atd.employee_id === id)
 	);
 
+let getBroadcasts = () =>
+	queryDB("broadcast", (collection) =>
+		collection
+			.find({
+				date: {
+					$gte: parseInt(new Date(Date.now()).getTime() / 1000 - 163 * 3600),
+				},
+			})
+			.toArray()
+	);
+
 module.exports = {
 	queryDB,
 	queryUser,
@@ -243,4 +254,5 @@ module.exports = {
 	getJob,
 	markAtd,
 	getMonthlyAtdEmp,
+	getBroadcasts,
 };

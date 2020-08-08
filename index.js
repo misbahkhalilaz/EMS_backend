@@ -31,8 +31,14 @@ io.on("connection", (socket) => {
 	socket.on("join", (room) => {
 		socket.join(room);
 		io.to(room).emit("joined", room);
-		socket.on("msg", (msg) => {
-			io.to(room).emit("message", msg);
+		socket.on("broadcast", (bc) => {
+			queryDB("broadcast", (collection) => collection.insertOne(JSON.parse(bc)))
+				.then((res) => res.result.n)
+				.then((res) => {
+					if (res === 1) {
+						io.to(room).emit("rcv_broadcast");
+					}
+				});
 		});
 	});
 });
