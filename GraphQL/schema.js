@@ -13,6 +13,7 @@ const schema = buildSchema(`
 			readJob(id: String!): job!
 			readMonthlyAtdEmp(month: Int!, year: Int!): [attendance]
 			readBroadcast: [broadcast]
+			readProjEmp: [projectEmp]
 		}
 
 		type Mutation {
@@ -114,6 +115,7 @@ const schema = buildSchema(`
 			leading_member: String!,
 			other_members: [String]
 		}
+		
 
 		type project {
 			_id: String!,
@@ -124,6 +126,22 @@ const schema = buildSchema(`
 			other_members: [String],
 			completed: Boolean!,
 			tasks: [task]
+		}
+
+		type projectEmp {
+			_id: String!,
+			title: String!,
+			posted_date: Int!,
+			deadline: Int!,
+			leading_member: String!,
+			other_members: [String],
+			completed: Boolean!,
+			tasks: [task]
+			chat: [chat]
+		}
+
+		type chat {
+			msg: String,
 		}
 
 		type task {

@@ -236,6 +236,11 @@ let getBroadcasts = () =>
 			.toArray()
 	);
 
+let getProjEmp = (id) =>
+	queryDB("projects", (collection) =>
+		collection.find({ other_members: id }).toArray()
+	);
+
 module.exports = {
 	queryDB,
 	queryUser,
@@ -255,4 +260,5 @@ module.exports = {
 	markAtd,
 	getMonthlyAtdEmp,
 	getBroadcasts,
+	getProjEmp,
 };
