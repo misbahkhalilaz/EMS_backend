@@ -1,22 +1,22 @@
 {
-  "name": "ems_backend",
-  "version": "1.0.0",
-  "description": "nodejs, express backend with graphql",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon"
-  },
-  "author": "Misbah Khalil",
-  "license": "MIT",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "cron": "^1.8.2",
-    "express": "^4.17.1",
-    "express-graphql": "^0.9.0",
-    "graphql": "^15.1.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongodb": "^3.5.9",
-    "socket.io": "^2.3.0"
-  }
+	"name": "ems_backend",
+	"version": "1.0.0",
+	"description": "nodejs, express backend with graphql",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node index"
+	},
+	"author": "Misbah Khalil",
+	"license": "MIT",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"cron": "^1.8.2",
+		"express": "^4.17.1",
+		"express-graphql": "^0.9.0",
+		"graphql": "^15.1.0",
+		"jsonwebtoken": "^8.5.1",
+		"mongodb": "^3.5.9",
+		"socket.io": "^2.3.0"
+	}
 }
