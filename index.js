@@ -178,6 +178,6 @@ app.use(
 		})))()
 );
 
-server.listen(4000, () => {
+server.listen((process.env.PORT || 4000, () => {
 	console.log("port = 4000");
 });
