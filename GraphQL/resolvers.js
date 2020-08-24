@@ -42,11 +42,7 @@ let read_jobs = (args, req) => {
 	} else throw "access denied for " + req.token_data.role;
 };
 
-let read_employees = (args, req) => {
-	if (req.token_data.role === "department") {
-		return getEmployees();
-	} else throw "access denied for " + req.token_data.role;
-};
+let read_employees = (args, req) => getEmployees();
 
 let read_projects = (args, req) => {
 	if (req.token_data.role === "department") {
