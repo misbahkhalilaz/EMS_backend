@@ -23,6 +23,7 @@ const schema = buildSchema(`
 			createProject(project: Project!): Int
 			markLeave(id: String!): Int
 			markAtd(id: String!): Int
+			markTaskComp(_id: String!, assign_date: Int!, value: Boolean!): Int!
 		}
 
 		type bio {
@@ -148,6 +149,7 @@ const schema = buildSchema(`
 			member_id: String!,
 			task: String!,
 			deadline: Int!,
+			assign_date: Int!,
 			completed: Boolean!
 		}
 
