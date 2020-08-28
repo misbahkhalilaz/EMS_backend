@@ -94,8 +94,10 @@ let read_broadcast = (args, req) => getBroadcasts();
 
 let read_proj_emp = (args, req) => getProjEmp(req.token_data.userid);
 
-let mark_task_comp = (args, req) =>
-  markTaskComp(args).then((res) => res.result.n);
+let mark_task_comp = (args, req) => {
+  console.log(args);
+  return markTaskComp(args).then((res) => res.result.n);
+};
 
 const resolver = (req) => ({
   createEmployee: (args) => create_employee(args, req),
