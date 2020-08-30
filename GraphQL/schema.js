@@ -139,12 +139,10 @@ const schema = buildSchema(`
 			other_members: [String],
 			completed: Boolean!,
 			tasks: [task]
-			chat: [chat]
+			chat: [message]
 		}
 
-		type chat {
-			msg: String,
-		}
+		
 
 		type task {
 			member_id: String!,
@@ -175,7 +173,6 @@ const schema = buildSchema(`
 		}
 
 		type message {
-			_id: String!,
 			message: String!,
 			sender_id: String!
 			sender_name: String!
