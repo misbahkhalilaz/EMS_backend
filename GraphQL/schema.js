@@ -174,6 +174,14 @@ const schema = buildSchema(`
 			admins: [user!]!
 		}
 
+		type message {
+			_id: String!,
+			message: String!,
+			sender_id: String!
+			sender_name: String!
+			timestamp: Int!
+		}
+
 		type user {
 			name: String!,
 			userid: String!,
