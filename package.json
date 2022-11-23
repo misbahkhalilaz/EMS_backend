@@ -17,6 +17,6 @@
 		"graphql": "^15.1.0",
 		"jsonwebtoken": "^8.5.1",
 		"mongodb": "^3.5.9",
-		"socket.io": "^2.3.0"
+		"socket.io": "^2.5.0"
 	}
 }
